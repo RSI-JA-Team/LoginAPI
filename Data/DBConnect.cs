@@ -139,8 +139,49 @@ namespace LoginApi.Data
             }
         }
 
-        //Select statement
-        public List<string>[] Select()
+        //alternate select statement to check for just email in field
+        public List<string>[] SelectEmail(string userEmail)
+        {
+            string query = "SELECT * FROM user WHERE email= " + userEmail;
+            //Create a list to store the result
+            //probably just need a string not a list  
+            List<string>[] list = new List<string>[7];
+            string rsiEmail = null;
+
+            //Open connection
+            if (this.OpenConnection() == true)
+            {
+                //Create Command
+                MySqlCommand cmd = new MySqlCommand(query, connection);
+                //Create a data reader and Execute the command
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                //Read the data and store them in the list
+                while (dataReader.Read())
+                {
+                    //var rowNum = 0;
+                    list[0].Add(dataReader["email"] + "");
+    
+                }
+                //close Data Reader
+                dataReader.Close();
+
+                //close Connection
+                this.CloseConnection();
+
+                //return list to be displayed
+                Console.WriteLine(list);
+                return list;
+            }
+            else
+            {
+                return null; //not found rsiEmail;
+
+            }
+        }
+
+            //Select statement to check for user in user table
+            public List<string>[] Select()
         {
             string query = "SELECT * FROM user";
 
